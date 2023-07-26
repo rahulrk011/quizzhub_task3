@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{%  block content %}
+
+<div class="pg">
+    <div class="cl1">
+        <h2>Submitted Questions</h2>
+        <ul class="submitted-questions">
+            <!-- Loop through submitted questions here -->
+            <!-- For each submitted question, use a link to return to the form section for editing -->
+            <li><a href="#question1">Question 1</a></li>
+            <li><a href="#question2">Question 2</a></li>
+            <!-- Add more submitted questions as needed -->
+        </ul>
+    </div>
+    <div class="cl2">
+        
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+
+    <p>
+        {{ form.question_number.label }}<br>
+        {{ form.question_number(size=10) }}<br>
+        {% for error in form.question.errors %}
+        <span style="color:red;">[{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.question.label }}<br>
+        {{ form.question(size=100) }}<br>
+        {% for error in form.question.errors %}
+        <span style="color:red;">[{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.op1.label }}<br>
+        {{ form.op1(size=20) }}<br>
+        {% for error in form.op1.errors %}
+        <span style="color:red;">[{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.op2.label }}<br>
+        {{ form.op2(size=20) }}<br>
+        {% for error in form.op2.errors %}
+        <span style="color:red;">[{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.op3.label }}<br>
+        {{ form.op3(size=20) }}<br>
+        {% for error in form.op3.errors %}
+        <span style="color:red;">[{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.op4.label }}<br>
+        {{ form.op4(size=20) }}<br>
+        {% for error in form.op4.errors %}
+        <span style="color:red;">[{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.crctop.label }}<br>
+        {{ form.crctop(size=10) }}<br>
+        {% for error in form.crctop.errors %}
+        <span style="color:red;">[{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p class="submit">
+        <button type="submit"> Submit </button>
+    </p>
+</form>
+
+    </div>
+
+    
+</div>
+
+
+{% endblock %}

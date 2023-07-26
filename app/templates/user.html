@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<table>
+    <tr valign="top">
+        <td><img src="{{ user.avatar(128) }}"></td>
+        <td><h1> User : {{ user.username }}</h1>
+            {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+            {% if user.last_seen %}<p> Last Seen on : {{ user.last_seen }}</p>{% endif %}<br>
+            <p>{{ user.followers.count() }} <em>followers</em><br>{{ user.followed.count()}},<em>Following</em> </p>
+            <br>{% if user == current_user %}
+            <p> <a href="{{url_for('edit_profile')}}">Edit your profile</a></p>
+            {% elif not current_user.is_following(user) %}
+        <p>
+            <form action="{{ url_for('follow', username=user.username) }}" method="post">
+                {{ form.hidden_tag() }}
+                {{ form.submit(value='Follow') }}
+            </form>
+        </p>
+        {% else %}
+        <p>
+            <form action="{{ url_for('unfollow', username=user.username) }}" method="post">
+                {{ form.hidden_tag() }}
+                {{ form.submit(value='Unfollow') }}
+            </form>
+        </p>
+        {% endif %}
+        </td>
+        
+    </tr>
+</table>
+
+<hr>
+{% if user.quizess %}
+{% for quiz in user.quizess %}
+    <table>
+        <tr valign="top">
+            <td><img src="{{ quiz.author.avatar(36) }}"></td>
+            <td>
+                    Quiz Name : <a href="{{ url_for('quiz',quizname=quiz.name)}}">{{ quiz.name}}</a><br> Total questions : {{quiz.number}}  </td>
+        </tr>
+    </table>
+
+{% endfor %}
+
+{% else %}
+
+    <table>
+        <tr valign="top">
+            <td><h1> User has not created any quiz </h1></td>
+            </tr>
+    </table>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,20 @@
+
+<table>
+    <tr>
+        <td>
+            {{ question.question_number }}
+        </td>
+        <td>
+            <div class="questions">
+                <div class="qdata" data-crctop="{{ question.correct_option }}"></div>
+                {{ question.question }}
+                <div class="options">
+                    <div class="op1"><input type="checkbox" name="option" value="1"> {{ question.op1 }}</div>
+                    <div class="op2"><input type="checkbox" name="option" value="2"> {{ question.op2 }}</div>
+                    <div class="op3"><input type="checkbox" name="option" value="3"> {{ question.op3 }}</div>
+                    <div class="op4"><input type="checkbox" name="option" value="4"> {{ question.op4 }}</div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>

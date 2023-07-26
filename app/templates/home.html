@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    .dashboard{
+        color:rgb(155, 235, 18);
+    }
+</style>
+
+<div class="page">
+    <div class="col1">
+        <div class="row1">
+            <h1 class="salutation"> Hello , {{ current_user.username.capitalize() }} !!</h1>
+        <a href="{{ url_for('quizinfo')}}"><button class="create" > + Create Quiz </button></a>
+        {% block fill %} {% endblock %}
+        </div>
+        <div class="row2">
+        </div>    
+    </div>
+    <div class="col2">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search user" width="100%">
+            <div id="searchResults"></div>
+        </div>
+    </div>
+</div>
+
+<script defer>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Send AJAX request to get the quiz data
+        var quizDataString = localStorage.getItem('quizData');
+        if (quizDataString) {
+            var quizData = JSON.parse(quizDataString);
+            var scoreElement = document.querySelector('.row2');
+
+            var scoreHtml = '<h1>Past Quizess taken</h1> <br>';
+            quizData.forEach(function(quiz) {
+                if (quiz.score && quiz.quiz_name) {
+                    var url = "/quiz/" + encodeURIComponent(quiz.quiz_name);
+                    scoreHtml += `<div class="quiz-data"><a href="${url}">${quiz.quiz_name}</a> - ${quiz.score} / ${quiz.number}</div>`;
+                }
+            });
+
+            if (quizData.length === 0) {
+                scoreHtml += "<div class='quiz-data'>No past quiz data available.</div>";
+            }
+
+            scoreElement.innerHTML = scoreHtml;
+        };
+    })
+
+
+    function displaySearchResults(users) {
+        var searchResultsElement = document.getElementById('searchResults');
+        if (users.length === 0) {
+            searchResultsElement.innerHTML = 'No users found.';
+        } else {
+            var resultsHtml = '';
+            users.forEach(function(user) {
+                var url = "/user/" + encodeURIComponent(user.username)
+                resultsHtml += `<div class="search-result"><a href='${url}'>${user.username}</a></div>`;
+            });
+            searchResultsElement.innerHTML = resultsHtml;
+        }
+    }
+
+    function searchUsers(username) {
+        fetch(`/search_users?username=${username}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            displaySearchResults(data.users);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    
+    var searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', function() {
+        var searchQuery = searchInput.value;
+        if (searchQuery.length >= 1) { 
+            searchUsers(searchQuery);
+        } else {
+            document.getElementById('searchResults').innerHTML = '';
+        }
+    });
+</script>
+
+{% endblock %}

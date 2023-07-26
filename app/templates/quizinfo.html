@@ -1,0 +1,43 @@
+{% extends "home.html" %}
+{% block fill %}
+
+<style>
+ .info{
+    margin: 20px 0 20px 25%;
+    width:40%;
+    text-align: center;
+    justify-content: center;
+    background-image: linear-gradient(300deg, rgba(16, 16, 16, 0.957),rgb(59, 60, 61),rgba(35, 34, 34, 0.925));
+    color:#fff;
+    line-height: 40px;
+    z-index: 10;
+    border-radius: 20px;
+    animation-delay: 5s;
+    transition:.3s ease-in-out;
+ }
+
+</style>
+<form class='info' action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(size=32) }}<br>
+            {% for error in form.name.errors %}
+            <span style="color:red;">[{{error}}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.noq.label }}<br>
+            {{ form.noq() }}<br>
+            {% for error in form.noq.errors %}
+            <span style="color:red;">[{{error}}]</span>
+            {% endfor %}
+        </p>
+        <p class="submit">{{ form.submit() }}</p>
+    </form>
+
+
+
+
+
+{% endblock %}

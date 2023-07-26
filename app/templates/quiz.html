@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="info">
+    <div class="heading"> {{quiz.name}}</div>
+</div>
+<div class="questions">
+    {% for question in questions %}
+    {% include "_ques.html" %}
+    {% endfor %}
+</div>
+
+<button onclick="submitQuiz()">Submit</button>
+<script defer>
+    function submitQuiz() {
+        var questions = document.getElementsByClassName('questions');
+        var score=0;
+        for (var i = 1; i < questions.length; i++) {
+            var question = questions[i];
+            console.log(i,question)
+            var questionDataElement = question.querySelector('.qdata');
+            var correctAnswer = questionDataElement.getAttribute("data-crctop");
+            var selectedChoice = question.querySelector('input[name="option"]:checked');
+
+            if (selectedChoice) {
+                var choiceValue = selectedChoice.value;
+                console.log(choiceValue);
+                console.log(correctAnswer);
+
+                if (choiceValue === correctAnswer) {
+                    score += 1;
+                    selectedChoice.checked = true;  // Check the correct option
+                } else {
+                    console.log("Wrong answer");
+                }
+
+                console.log(choiceValue, score);
+            }
+        }
+
+        console.log("Quiz submitted. Score:", score);
+        
+
+        //sending quiz status
+        var data = {
+            "score": score,
+            "quiz_name": "{{ quiz.name }}",
+            "number":"{{quiz.number}}"
+        };
+
+        var existingQuizDataString = localStorage.getItem('quizData');
+        var existingQuizData = existingQuizDataString ? JSON.parse(existingQuizDataString) : [];
+        existingQuizData.push(data);
+        localStorage.setItem('quizData', JSON.stringify(existingQuizData));
+
+        // Send AJAX POST request to the server
+        fetch('/submit_quiz', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); 
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+        
+        window.location.href="{{url_for('home')}}"
+    }
+</script>
+
+
+{% endblock %}

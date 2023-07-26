@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='main.css')}}" >
+    {% if title %}
+    <title> QuizzHub - {{ title }}</title>
+    {% else %}
+    <title>QuizzHub</title>
+    {% endif %}
+    
+</head>
+<body>
+    <nav>
+        <div class="logo"><a href="{{url_for('landing')}}"><img src="{{ url_for('static',filename='logo.png') }}"></a> </div>
+        <ul>
+           
+        {% if current_user.is_anonymous %}
+        <li><a href="#"> About </a></li> 
+        <li class="logintext"><a href="{{url_for('login')}}" class="logintext"> Login</a></li>
+        {% else %}
+        <li><a href="{{ url_for('home')}}"> Dashboard</a></li>
+        <li><a href="{{url_for('user',username=current_user.username)}}">Profile</a></li>
+        <li><a href="{{ url_for('logout')}}"> Logout</a></li>
+        
+        {% endif %}</ul>
+    </nav>
+    <div class="login">
+        {% block content %} {% endblock %}
+        <ul>
+            {% for mesg in get_flashed_messages() %}
+                <li> {{ mesg }}</li>
+            </ul>
+            {% endfor %}
+    </div>
+
+   
+    <section>
+    <div class="text"><img src="{{url_for('static',filename='logo.png')}}" width="200px" style="position: absolute; margin-left: -36%;"> <h1 id="heading">uizzHub </h1></div>
+    <div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+
+    </div>
+    </section>
+
+</body>
+</html>
