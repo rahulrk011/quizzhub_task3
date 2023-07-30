@@ -1,0 +1,14 @@
+{"builds":[
+{
+    "src":"quizzhub.py",
+    "use":"@vercel/python"
+}
+
+],
+"routes":[
+    {
+        "src":"/(.*)",
+        "dest":"quizzhub.py"
+    }
+]
+}
