@@ -8,7 +8,7 @@
 "routes":[
     {
         "src":"/(.*)",
-        "dest":"quizzhub.py"
+        "dest":"app/routes.py"
     }
 ]
 }
